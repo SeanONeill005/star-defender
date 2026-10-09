@@ -9,12 +9,14 @@ public class playerMovement : MonoBehaviour
     public float speed = 10;
     private Rigidbody playerBody;
     private float movementX;
-    private float xBound = 20.0f;
-
+    private float xBound = 12.0f;
+    public GameObject bullet;
+    private bulletControler bulletUser;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         playerBody = GetComponent<Rigidbody>();
+        bulletUser = bullet.GetComponent<bulletControler>();
     }
 
     void OnMove(InputValue movementValue)
@@ -31,6 +33,11 @@ public class playerMovement : MonoBehaviour
         Vector3 position = playerBody.position;
         position.x = Mathf.Clamp(position.x, -xBound, xBound);
         playerBody.position = position;
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            bulletUser.SpawnBullet(transform.position);
+        }    
     }
 
 
