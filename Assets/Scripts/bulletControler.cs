@@ -7,9 +7,9 @@ public class bulletControler : MonoBehaviour
 {
     public GameObject bulletPrefab;
     private Rigidbody bulletBody;
-    private float movementZ;
+    private float movementY;
     public float speed = 1;
-    private float zBound = 12;
+    private float yBound = 12;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -19,11 +19,11 @@ public class bulletControler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        bulletBody.linearVelocity = new Vector3(movementZ * speed, 0.0f, 0.0f);
+        bulletBody.linearVelocity = new Vector3(0.0f, movementY * speed, 0.0f);
         Vector3 position = bulletBody.position;
-        position.x = Mathf.Clamp(position.x, -zBound, zBound);
-        bulletBody.position = position + new Vector3(0, 0, speed);
-        if (bulletBody.position.z > 12)
+        position.x = Mathf.Clamp(0, position.y, 0);
+        bulletBody.position = position + new Vector3(0, speed, 0);
+        if (bulletBody.position.y > 12)
         {
             Destroy(gameObject);
         }
