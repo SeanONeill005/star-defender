@@ -36,7 +36,7 @@ public class playerMovement : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            bulletUser.SpawnBullet(transform.position);
+            bulletUser.SpawnBullet(transform.position, 1);
         }    
     }
 
