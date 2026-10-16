@@ -12,7 +12,6 @@ public class bulletControler : MonoBehaviour
     private Rigidbody bulletBody;
     private float movementY;
     public float speed = 1;
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -36,13 +35,15 @@ public class bulletControler : MonoBehaviour
     {
         if (direction == -1)
         {
-            movementY = -movementY;
-            speed = -speed;
+            movementY = -Mathf.Abs(movementY);
+            speed = -Mathf.Abs(speed);
+            spawnPosition.y -= 1;
         }
         else if (direction == 1)
         {
             movementY = Mathf.Abs(movementY);
             speed = Mathf.Abs(speed);
+            spawnPosition.y += 1;
         }
         print("Spawn Bullet");
         Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);

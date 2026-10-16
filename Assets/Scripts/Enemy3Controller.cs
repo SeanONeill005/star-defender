@@ -65,4 +65,12 @@ public class Enemy3Controller : MonoBehaviour
         
         return position;
     }
+
+    private void OnTriggerEnter(Collider collider)
+    {
+        if (collider.gameObject.CompareTag("Bullet"))
+        {
+            Destroy(gameObject);
+        }
+    }
 }

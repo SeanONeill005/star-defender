@@ -1,8 +1,8 @@
+using TMPro;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
-
-using UnityEngine.UIElements;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class playerMovement : MonoBehaviour
 {
@@ -40,5 +40,19 @@ public class playerMovement : MonoBehaviour
         }    
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Bullet"))
+        {
+            Destroy(gameObject);
+        }
+    }
 
+    private void OnTriggerEnter(Collider collider)
+    {
+        if (collider.gameObject.CompareTag("Bullet"))
+        {
+            Destroy(gameObject);
+        }
+    }
 }
