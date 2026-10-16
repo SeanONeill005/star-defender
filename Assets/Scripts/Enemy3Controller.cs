@@ -10,6 +10,7 @@ public class Enemy3Controller : MonoBehaviour
     float speed = 0.05f;
     float moveTimer = 0.0f;
     float shootTimer = 0.0f;
+    int shootTimeout;
     public GameObject bullet;
     private bulletControler bulletUser;
      // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -17,6 +18,7 @@ public class Enemy3Controller : MonoBehaviour
     {
         currentDestination = GenerateDestination();
         bulletUser = bullet.GetComponent<bulletControler>();
+        shootTimeout = Random.Range(2, 7);
     }
 
     // Update is called once per frame
@@ -31,7 +33,7 @@ public class Enemy3Controller : MonoBehaviour
             moveTimer = 0;
         }
         
-        if (shootTimer > 5)
+        if (shootTimer > shootTimeout)
         {
             bulletUser.SpawnBullet(transform.position, -1);
             shootTimer = 0;

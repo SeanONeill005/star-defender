@@ -36,4 +36,12 @@ public class EnemyController : MonoBehaviour
             gameObject.transform.position = pos;
         }
     }
+
+    private void OnTriggerEnter(Collider collider)
+    {
+        if (collider.gameObject.CompareTag("Bullet"))
+        {
+            Destroy(gameObject);
+        }
+    }
 }

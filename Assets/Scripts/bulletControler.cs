@@ -1,10 +1,4 @@
-using System;
-using System.Net;
-using Unity.VisualScripting;
 using UnityEngine;
-
-
-
 
 public class bulletControler : MonoBehaviour
 {
@@ -48,5 +42,12 @@ public class bulletControler : MonoBehaviour
         print("Spawn Bullet");
         Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);
         print(spawnPosition);
+    }
+    private void OnTriggerEnter(Collider collider)
+    {
+        if (collider.gameObject.CompareTag("Bullet"))
+        {
+            Destroy(gameObject);
+        }
     }
 }
