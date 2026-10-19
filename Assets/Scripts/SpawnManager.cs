@@ -12,6 +12,8 @@ public class SpawnManager : MonoBehaviour
     private int waveChoice;
     public int enemyCount;
     public int waveNumber = 1;
+    private int wave1Rows = 3;
+    private int wave1Columns = 6;
 
     public GameObject powerupPrefab;
     private float powerupTimer = 0.0f;
@@ -71,9 +73,13 @@ public class SpawnManager : MonoBehaviour
        
         if (waveChoice == 1)
         {
-            for (int i = 0; i < enemiesToSpawn / 2; i++)
+            for (int row = 0; row < wave1Rows; row++)
             {
-                Instantiate(enemy1Prefab, GenerateSpawnPosition(), enemy1Prefab.transform.rotation);
+                for (int column = 0; column < wave1Columns; column++)
+                {
+                    Vector3 position = new Vector3(-3.75f + column * 1.5f, 9.5f - row * 1.0f, 0);
+                    Instantiate(enemy1Prefab, position, enemy1Prefab.transform.rotation);
+                }
             }
             waveChoice = 2;
         }
