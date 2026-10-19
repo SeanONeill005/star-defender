@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -4613295805505593595}
   m_Layer: 0
   m_Name: Bullet
-  m_TagString: Bullet
+  m_TagString: PlayerBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -127,7 +127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::bulletControler
   bulletPrefab: {fileID: 3369934423922831855}
-  speed: 0.03
+  speed: 12
 --- !u!54 &-4613295805505593595
 Rigidbody:
   m_ObjectHideFlags: 0

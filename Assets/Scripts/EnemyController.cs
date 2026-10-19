@@ -38,8 +38,9 @@ public class EnemyController : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
-        if (collider.gameObject.CompareTag("Bullet"))
+        if (collider.gameObject.CompareTag("PlayerBullet"))
         {
+            Destroy(collider.gameObject);
             Destroy(gameObject);
         }
     }

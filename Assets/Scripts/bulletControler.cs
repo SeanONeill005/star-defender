@@ -4,7 +4,6 @@ public class bulletControler : MonoBehaviour
 {
     public GameObject bulletPrefab;
     private Rigidbody bulletBody;
-    private float movementY;
     public float speed = 1;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -15,11 +14,8 @@ public class bulletControler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        bulletBody.linearVelocity = new Vector3(0.0f, movementY * speed, 0.0f);
-        Vector3 position = bulletBody.position;
-        position.y = Mathf.Clamp(0, position.y, 0);
-        bulletBody.position = position + new Vector3(0, speed, 0);
-        if (bulletBody.position.y > 12 || bulletBody.position.y < 0)
+        bulletBody.linearVelocity = new Vector3(0.0f, speed, 0.0f);
+        if (bulletBody.position.y > 12 || bulletBody.position.y < -3)
         {
             Destroy(gameObject);
         }
@@ -29,23 +25,21 @@ public class bulletControler : MonoBehaviour
     {
         if (direction == -1)
         {
-            movementY = -Mathf.Abs(movementY);
-            speed = -Mathf.Abs(speed);
             spawnPosition.y -= 1;
         }
         else if (direction == 1)
         {
-            movementY = Mathf.Abs(movementY);
-            speed = Mathf.Abs(speed);
             spawnPosition.y += 1;
         }
         print("Spawn Bullet");
-        Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);
+        GameObject newBullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);
+        newBullet.GetComponent<bulletControler>().speed = Mathf.Abs(speed) * direction;
         print(spawnPosition);
     }
     private void OnTriggerEnter(Collider collider)
     {
-        if (collider.gameObject.CompareTag("Bullet"))
+        bool hitBullet = collider.gameObject.CompareTag("PlayerBullet") || collider.gameObject.CompareTag("EnemyBullet");
+        if (hitBullet && !collider.gameObject.CompareTag(gameObject.tag))
         {
             Destroy(gameObject);
         }

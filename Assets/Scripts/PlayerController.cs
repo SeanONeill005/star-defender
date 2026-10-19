@@ -93,8 +93,9 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
-        if (collider.gameObject.CompareTag("Bullet"))
+        if (isAlive && collider.gameObject.CompareTag("EnemyBullet"))
         {
+            Destroy(collider.gameObject);
             isAlive = false;
         }
     }
