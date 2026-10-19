@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
+    public int points = 10;
+    private int health = 2;
     private float movingCooldown = 3.0f;
     private float timer = 0.0f;
 
@@ -41,7 +43,12 @@ public class EnemyController : MonoBehaviour
         if (collider.gameObject.CompareTag("PlayerBullet"))
         {
             Destroy(collider.gameObject);
-            Destroy(gameObject);
+            health--;
+            if (health == 0)
+            {
+                FindFirstObjectByType<SpawnManager>().AddScore(points);
+                Destroy(gameObject);
+            }
         }
     }
 }

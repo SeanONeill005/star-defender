@@ -449,7 +449,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d72b823296857c468cf63ff710a331f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  speed: 15
+  speed: 10
   bullet: {fileID: 3369934423922831855, guid: 4619d650fe500f047808935cdc47931a, type: 3}
   playerLives: {fileID: 1122076430}
 --- !u!54 &615185141

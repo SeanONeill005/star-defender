@@ -10,13 +10,19 @@ public class SpawnManager : MonoBehaviour
     public int enemyCount;
     public int waveNumber = 1;
     private int waveChoice;
-    int currentEnemiesNum = 0;
     int totalScore = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         waveChoice = 1;
+        score.text = "Score: " + totalScore;
         SpawnEnemyWave(waveNumber);
+    }
+
+    public void AddScore(int points)
+    {
+        totalScore += points;
+        score.text = "Score: " + totalScore;
     }
 
     private Vector3 GenerateSpawnPosition()
@@ -33,22 +39,10 @@ public class SpawnManager : MonoBehaviour
         if (waveChoice == 1)
         {
             enemyCount = FindObjectsByType<EnemyController>(FindObjectsSortMode.None).Length;
-            if (currentEnemiesNum != enemyCount)
-            {
-                totalScore += 10;
-                score.text = "Score: " + totalScore;
-                currentEnemiesNum = enemyCount;
-            }
         }
         else if (waveChoice == 2)
         {
             enemyCount = FindObjectsByType<Enemy3Controller>(FindObjectsSortMode.None).Length;
-            if (currentEnemiesNum != enemyCount)
-            {
-                totalScore += 10;
-                score.text = "Score: " + totalScore;
-                currentEnemiesNum = enemyCount;
-            }
         }
 
         if (enemyCount == 0)

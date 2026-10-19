@@ -13,6 +13,8 @@ public class Enemy3Controller : MonoBehaviour
     int shootTimeout;
     public GameObject bullet;
     private bulletControler bulletUser;
+    public int points = 30;
+    private int health = 2;
      // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -73,7 +75,12 @@ public class Enemy3Controller : MonoBehaviour
         if (collider.gameObject.CompareTag("PlayerBullet"))
         {
             Destroy(collider.gameObject);
-            Destroy(gameObject);
+            health--;
+            if (health == 0)
+            {
+                FindFirstObjectByType<SpawnManager>().AddScore(points);
+                Destroy(gameObject);
+            }
         }
     }
 }
