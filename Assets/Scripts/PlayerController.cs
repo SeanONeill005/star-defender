@@ -14,8 +14,11 @@ public class PlayerController : MonoBehaviour
     private float movementX;
     private float xBound = 10.0f;
     private int lives = 3;
-    private bool isAlive = true;
-    private float deathTimer = 0;
+    private float invulnerableTimer = 0;
+    private readonly float invulnerableTime = 2.0f;
+    private readonly float blinkInterval = 0.25f;
+    private float blinkTimer = 0;
+    private Renderer playerRenderer;
 
     void Awake()
     {
@@ -46,6 +49,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         playerBody = GetComponent<Rigidbody>();
+        playerRenderer = GetComponent<Renderer>();
+        UpdateLives();
         bulletUser = bullet.GetComponent<bulletControler>();
     }
 
@@ -56,57 +61,63 @@ public class PlayerController : MonoBehaviour
 
     private void OnFire(InputAction.CallbackContext context)
     {
-        if (isAlive)
-        {
-            bulletUser.SpawnBullet(transform.position, 1);
-        }
+        bulletUser.SpawnBullet(transform.position, 1);
     }
 
     void Update()
     {
-        if (isAlive)
+        playerBody.linearVelocity = new Vector3(movementX * speed, 0.0f, 0.0f);
+        Vector3 position = playerBody.position;
+        position.x = Mathf.Clamp(position.x, -xBound, xBound);
+        playerBody.position = position;
+
+        if (invulnerableTimer > 0)
         {
-            playerBody.linearVelocity = new Vector3(movementX * speed, 0.0f, 0.0f);
-            Vector3 position = playerBody.position;
-            position.x = Mathf.Clamp(position.x, -xBound, xBound);
-            playerBody.position = position;
-        }
-        else
-        {
-            deathTimer += Time.deltaTime;
-            if (deathTimer > 2)
+            invulnerableTimer -= Time.deltaTime;
+            blinkTimer += Time.deltaTime;
+            if (blinkTimer >= blinkInterval)
             {
-                deathTimer = 0;
-                if (lives > 0)
-                {
-                    lives--;
-                    respawnSequence();
-                    isAlive = true;
-                }
-                else
-                {
-                    Destroy(gameObject);
-                }
+                blinkTimer = 0;
+                playerRenderer.enabled = !playerRenderer.enabled;
+            }
+            if (invulnerableTimer <= 0)
+            {
+                playerRenderer.enabled = true;
             }
         }
     }
 
     private void OnTriggerEnter(Collider collider)
     {
-        if (isAlive && collider.gameObject.CompareTag("EnemyBullet"))
+        if (invulnerableTimer <= 0 && collider.gameObject.CompareTag("EnemyBullet"))
         {
             Destroy(collider.gameObject);
-            isAlive = false;
+            DeathSequence();
         }
     }
 
-    void respawnSequence()
+    void DeathSequence()
     {
-        gameObject.transform.position = Vector3.zero;
-        updateLives();
+        lives--;
+        UpdateLives();
+        if (lives > 0)
+        {
+            RespawnSequence();
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
-    void updateLives()
+    void RespawnSequence()
+    {
+        invulnerableTimer = invulnerableTime;
+        blinkTimer = 0;
+        playerRenderer.enabled = false;
+    }
+
+    void UpdateLives()
     {
         playerLives.text = "Lives: " + lives;
     }
