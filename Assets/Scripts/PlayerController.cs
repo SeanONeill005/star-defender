@@ -1,38 +1,67 @@
 using TMPro;
-using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
 
-public class playerMovement : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     public float speed = 4;
+    public GameObject bullet;
+    public TextMeshProUGUI playerLives;
+
     private Rigidbody playerBody;
+    private bulletControler bulletUser;
+    private InputSystem_Actions controls;
     private float movementX;
     private float xBound = 10.0f;
-    public GameObject bullet;
-    private bulletControler bulletUser;
     private int lives = 3;
     private bool isAlive = true;
     private float deathTimer = 0;
-    public TextMeshProUGUI playerLives;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    void Awake()
+    {
+        controls = new InputSystem_Actions();
+    }
+
+    void OnEnable()
+    {
+        controls.Player.Move.performed += OnMove;
+        controls.Player.Move.canceled += OnMove;
+        controls.Player.Attack.performed += OnFire;
+        controls.Player.Enable();
+    }
+
+    void OnDisable()
+    {
+        controls.Player.Move.performed -= OnMove;
+        controls.Player.Move.canceled -= OnMove;
+        controls.Player.Attack.performed -= OnFire;
+        controls.Player.Disable();
+    }
+
+    void OnDestroy()
+    {
+        controls.Dispose();
+    }
+
     void Start()
     {
         playerBody = GetComponent<Rigidbody>();
         bulletUser = bullet.GetComponent<bulletControler>();
-
     }
 
-    void OnMove(InputValue movementValue)
+    private void OnMove(InputAction.CallbackContext context)
     {
-        Vector2 movementVector = movementValue.Get<Vector2>();
-
-        movementX = movementVector.x;
+        movementX = context.ReadValue<Vector2>().x;
     }
 
-    // Update is called once per frame
+    private void OnFire(InputAction.CallbackContext context)
+    {
+        if (isAlive)
+        {
+            bulletUser.SpawnBullet(transform.position, 1);
+        }
+    }
+
     void Update()
     {
         if (isAlive)
@@ -41,11 +70,6 @@ public class playerMovement : MonoBehaviour
             Vector3 position = playerBody.position;
             position.x = Mathf.Clamp(position.x, -xBound, xBound);
             playerBody.position = position;
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                bulletUser.SpawnBullet(transform.position, 1);
-            }
         }
         else
         {
@@ -66,19 +90,19 @@ public class playerMovement : MonoBehaviour
             }
         }
     }
+
     private void OnTriggerEnter(Collider collider)
     {
         if (collider.gameObject.CompareTag("Bullet"))
         {
             isAlive = false;
-            //gameObject.SetActive(false);
         }
     }
+
     void respawnSequence()
     {
         gameObject.transform.position = Vector3.zero;
         updateLives();
-        //gameObject.SetActive(true);
     }
 
     void updateLives()
