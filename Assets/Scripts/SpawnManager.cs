@@ -3,14 +3,19 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
+    public TextMeshProUGUI score;
+    int totalScore = 0;
+
     public GameObject enemy1Prefab;
     public GameObject enemy3Prefab;
-    public TextMeshProUGUI score;
     private float spawnRange = 9;
+    private int waveChoice;
     public int enemyCount;
     public int waveNumber = 1;
-    private int waveChoice;
-    int totalScore = 0;
+
+    public GameObject powerupPrefab;
+    private float powerupTimer = 0.0f;
+    private float nextPowerupTime = 10.0f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -49,6 +54,15 @@ public class SpawnManager : MonoBehaviour
         {
             waveNumber++;
             SpawnEnemyWave(waveNumber);
+        }
+
+        powerupTimer += Time.deltaTime;
+        if (powerupTimer > nextPowerupTime)
+        {
+            powerupTimer = 0.0f;
+            nextPowerupTime = Random.Range(10.0f, 20.0f);
+            Vector3 position = new Vector3(Random.Range(-spawnRange, spawnRange), 11, 0);
+            Instantiate(powerupPrefab, position, powerupPrefab.transform.rotation);
         }
     }
 

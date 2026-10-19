@@ -19,6 +19,9 @@ public class PlayerController : MonoBehaviour
     private readonly float blinkInterval = 0.25f;
     private float blinkTimer = 0;
     private Renderer playerRenderer;
+    private float powerupTimer = 0;
+    private readonly float powerupTime = 10.0f;
+    private readonly float spreadOffset = 0.4f;
 
     void Awake()
     {
@@ -62,6 +65,11 @@ public class PlayerController : MonoBehaviour
     private void OnFire(InputAction.CallbackContext context)
     {
         bulletUser.SpawnBullet(transform.position, 1);
+        if (powerupTimer > 0)
+        {
+            bulletUser.SpawnBullet(transform.position + Vector3.left * spreadOffset, 1);
+            bulletUser.SpawnBullet(transform.position + Vector3.right * spreadOffset, 1);
+        }
     }
 
     void Update()
@@ -85,10 +93,21 @@ public class PlayerController : MonoBehaviour
                 playerRenderer.enabled = true;
             }
         }
+
+        if (powerupTimer > 0)
+        {
+            powerupTimer -= Time.deltaTime;
+        }
     }
 
     private void OnTriggerEnter(Collider collider)
     {
+        if (collider.gameObject.CompareTag("Powerup"))
+        {
+            Destroy(collider.gameObject);
+            powerupTimer = powerupTime;
+        }
+
         if (invulnerableTimer <= 0 && collider.gameObject.CompareTag("EnemyBullet"))
         {
             Destroy(collider.gameObject);
