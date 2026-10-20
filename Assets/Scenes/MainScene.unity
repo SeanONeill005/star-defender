@@ -380,7 +380,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -52, y: 74}
+  m_AnchoredPosition: {x: -2099, y: 74}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &476972979
@@ -412,12 +412,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74ed64b0bd70e8940bdd5fc61bb5809b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  score: {fileID: 360717865}
   enemy1Prefab: {fileID: 7073435405089756374, guid: 4b11087804743e44faef77c4431cdb51, type: 3}
   enemy3Prefab: {fileID: 7073435405089756374, guid: d26c87ae31501b442acf82a39606ef79, type: 3}
-  score: {fileID: 360717865}
-  powerupPrefab: {fileID: 9054131541640227643, guid: c2c93db2b3e2c2d4ab05885cb4f3ac6e, type: 3}
   enemyCount: 0
   waveNumber: 1
+  powerupPrefab: {fileID: 9054131541640227643, guid: c2c93db2b3e2c2d4ab05885cb4f3ac6e, type: 3}
 --- !u!4 &476972981
 Transform:
   m_ObjectHideFlags: 0
